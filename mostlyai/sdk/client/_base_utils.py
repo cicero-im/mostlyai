@@ -63,7 +63,7 @@ def read_table_from_path(path: str | Path) -> (str, pd.DataFrame):
         if fn.lower().endswith((".csv", ".tsv")):
             try:
                 with open(fn) as f:
-                    header = f.readline()
+                    header = f.readline(5_000_000)
                 sniffer = csv.Sniffer()
                 delimiter = sniffer.sniff(header, ",;|\t' :").delimiter
             except (csv.Error, FileNotFoundError):
