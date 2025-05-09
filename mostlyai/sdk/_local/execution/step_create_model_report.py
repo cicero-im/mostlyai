@@ -15,8 +15,6 @@
 
 import logging
 from itertools import accumulate, takewhile
-
-import random
 from pathlib import Path
 from collections.abc import Callable
 
@@ -30,6 +28,7 @@ from mostlyai.sdk._local.execution.step_generate_model_report_data import qa_sam
 from mostlyai.sdk.domain import ModelType, Generator, StepCode, ModelMetrics
 
 from mostlyai import qa
+import secrets
 
 _LOG = logging.getLogger(__name__)
 
@@ -278,7 +277,7 @@ def pull_data_for_report(
         # flat setup
         ctx_df = None
         tgt_files = get_pqt_files(tgt_data)
-        random.shuffle(tgt_files)
+        secrets.SystemRandom().shuffle(tgt_files)
         if max_sample_size is None:
             cutoff_idx = len(tgt_files)
         else:
