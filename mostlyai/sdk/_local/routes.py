@@ -65,6 +65,7 @@ from mostlyai.sdk._local.storage import (
     write_connector_to_json,
 )
 from mostlyai.sdk._data.file.utils import read_data_table_from_path
+from security import safe_command
 
 
 class Routes:
@@ -357,7 +358,7 @@ class Routes:
             # call shell script to start training job
             cli_py = str((Path(os.path.dirname(os.path.realpath(__file__))) / "cli.py").absolute())
             cmd = ["python", cli_py, "run-training", generator.id, str(self.home_dir.absolute())]
-            subprocess.Popen(cmd)
+            safe_command.run(subprocess.Popen, cmd)
 
         @self.router.get("/generators/{id}/export-to-file", response_class=StreamingResponse)
         async def export_generator_to_file(id: str) -> StreamingResponse:
@@ -483,7 +484,7 @@ class Routes:
             # call shell script to start generation job
             cli_py = str((Path(os.path.dirname(os.path.realpath(__file__))) / "cli.py").absolute())
             cmd = ["python", cli_py, "run-generation", synthetic_dataset.id, str(self.home_dir.absolute())]
-            subprocess.Popen(cmd)
+            safe_command.run(subprocess.Popen, cmd)
 
         @self.router.get("/synthetic-datasets/{id}/config", response_model=SyntheticDatasetConfig)
         async def get_synthetic_dataset_config(id: str) -> SyntheticDatasetConfig:
