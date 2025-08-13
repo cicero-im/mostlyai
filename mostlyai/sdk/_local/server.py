@@ -14,7 +14,6 @@
 
 import time
 from pathlib import Path
-import random
 from threading import Thread
 
 import rich
@@ -22,6 +21,7 @@ from fastapi import FastAPI
 import uvicorn
 from mostlyai.sdk._local.routes import Routes
 import socket
+import secrets
 
 
 class LocalServer:
@@ -58,7 +58,7 @@ class LocalServer:
         failed_ports = []
         min_port, max_port = 49152, 65535
         for _ in range(10):
-            port = random.randint(min_port, max_port)
+            port = secrets.SystemRandom().randint(min_port, max_port)
             if not is_port_in_use(port, self.host):
                 return port
             failed_ports.append(port)
